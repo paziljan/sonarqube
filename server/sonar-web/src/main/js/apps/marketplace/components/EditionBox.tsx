@@ -57,10 +57,10 @@ export default class EditionBox extends React.PureComponent<Props> {
         )}
         <div>
           <h3 className="spacer-bottom">{edition.name}</h3>
-          <p>{edition.desc}</p>
+          <p>{edition.textDescription}</p>
         </div>
         <div className="marketplace-edition-action spacer-top">
-          <a href={edition.more_link} target="_blank">
+          <a href={edition.homeUrl} target="_blank">
             {translate('marketplace.learn_more')}
           </a>
           {!isInstalled && (
