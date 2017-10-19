@@ -201,14 +201,18 @@ public class SearchAction implements IssuesWsAction {
       .setDescription("Comma-separated list of languages. Available since 4.4")
       .setExampleValue("java,js");
     action.createParam(PARAM_CREATED_AT)
-      .setDescription("To retrieve issues created in a specific analysis, identified by an ISO-formatted datetime stamp.")
-      .setExampleValue("2013-05-01T13:00:00+0100");
+      .setDescription("To retrieve issues created during a specific analysis. <br>" +
+        "The format is <code>yyyy-MM-dd'T'HH:mm:ssZ</code>.")
+      .setExampleValue("2017-10-19T13:00:00+0200");
     action.createParam(PARAM_CREATED_AFTER)
-      .setDescription("To retrieve issues created after the given date (inclusive). Format: date or datetime ISO formats. If this parameter is set, createdSince must not be set")
-      .setExampleValue("2013-05-01 (or 2013-05-01T13:00:00+0100)");
+      .setDescription("To retrieve issues created after the given date (inclusive). <br>" +
+        "The format is <code>yyyy-MM-dd</code> for a date or <code>yyyy-MM-dd'T'HH:mm:ssZ</code> for a datetime. <br>" +
+        "If this parameter is set, createdSince must not be set")
+      .setExampleValue("2017-10-19 or 2017-10-19T13:00:00+0200");
     action.createParam(PARAM_CREATED_BEFORE)
-      .setDescription("To retrieve issues created before the given date (exclusive). Format: date or datetime ISO formats")
-      .setExampleValue("2013-05-01 (or 2013-05-01T13:00:00+0100)");
+      .setDescription("To retrieve issues created before the given date (exclusive). <br>" +
+        "The format is <code>yyyy-MM-dd</code> for a date or <code>yyyy-MM-dd'T'HH:mm:ssZ</code> for a datetime.")
+      .setExampleValue("2017-10-19 or 2017-10-19T13:00:00+0200");
     action.createParam(PARAM_CREATED_IN_LAST)
       .setDescription("To retrieve issues created during a time span before the current time (exclusive). " +
         "Accepted units are 'y' for year, 'm' for month, 'w' for week and 'd' for day. " +
@@ -428,7 +432,7 @@ public class SearchAction implements IssuesWsAction {
     }
   }
 
-  private void collectFacets(SearchResponseLoader.Collector collector, Facets facets) {
+  private static void collectFacets(SearchResponseLoader.Collector collector, Facets facets) {
     Set<String> facetRules = facets.getBucketKeys(PARAM_RULES);
     if (facetRules != null) {
       collector.addAll(SearchAdditionalField.RULES, Collections2.transform(facetRules, RuleKey::parse));
@@ -440,7 +444,7 @@ public class SearchAction implements IssuesWsAction {
     collector.addAll(SearchAdditionalField.USERS, facets.getBucketKeys(PARAM_ASSIGNEES));
   }
 
-  private void collectRequestParams(SearchResponseLoader.Collector collector, SearchWsRequest request) {
+  private static void collectRequestParams(SearchResponseLoader.Collector collector, SearchWsRequest request) {
     collector.addProjectUuids(request.getProjectUuids());
     collector.addComponentUuids(request.getFileUuids());
     collector.addComponentUuids(request.getModuleUuids());
