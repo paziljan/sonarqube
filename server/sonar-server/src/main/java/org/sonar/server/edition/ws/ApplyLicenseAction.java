@@ -24,6 +24,7 @@ import javax.annotation.Nullable;
 import org.sonar.api.server.ws.Request;
 import org.sonar.api.server.ws.Response;
 import org.sonar.api.server.ws.WebService;
+import org.sonar.api.utils.log.Loggers;
 import org.sonar.server.edition.EditionManagementState;
 import org.sonar.server.edition.License;
 import org.sonar.server.edition.MutableEditionManagementState;
@@ -91,8 +92,13 @@ public class ApplyLicenseAction implements EditionsWsAction {
       checkState(licenseCommit != null,
         "Can't decide edition does not require install if LicenseCommit instance is null. " +
           "License-manager plugin should be installed.");
-      editionManagementState.newEditionWithoutInstall(newLicense.getEditionKey());
-      licenseCommit.update(newLicense.getContent());
+      try {
+        licenseCommit.update(newLicense.getContent());
+        editionManagementState.newEditionWithoutInstall(newLicense.getEditionKey());
+      } catch (IllegalArgumentException e) {
+        Loggers.get(ApplyLicenseAction.class).error("Failed to commit license", e);
+        throw BadRequestException.create(e.getMessage());
+      }
     }
 
     WsUtils.writeProtobuf(buildResponse(), request, response);
