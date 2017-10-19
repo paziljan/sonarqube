@@ -97,7 +97,7 @@ public class CommitPendingEditionOnStartupTest {
 
     verify(editionManagementState).getPendingInstallationStatus();
     verify(editionManagementState).getPendingLicense();
-    verify(editionManagementState).finalizeInstallation();
+    verify(editionManagementState).finalizeInstallation(null);
     verifyNoMoreInteractions(editionManagementState);
     verify(licenseCommit).update(license);
     verifyNoMoreInteractions(licenseCommit);
@@ -127,7 +127,7 @@ public class CommitPendingEditionOnStartupTest {
 
     verify(editionManagementState).getPendingInstallationStatus();
     verify(editionManagementState).getPendingLicense();
-    verify(editionManagementState).finalizeInstallation();
+    verify(editionManagementState).finalizeInstallation(null);
     verifyNoMoreInteractions(editionManagementState);
     verify(licenseCommit).update(license);
     verifyNoMoreInteractions(licenseCommit);
@@ -164,7 +164,7 @@ public class CommitPendingEditionOnStartupTest {
     underTest.start();
 
     verify(editionManagementState).getPendingInstallationStatus();
-    verify(editionManagementState).finalizeInstallation();
+    verify(editionManagementState).finalizeInstallation(null);
     verifyNoMoreInteractions(editionManagementState);
   }
 
