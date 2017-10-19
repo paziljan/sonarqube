@@ -26,7 +26,7 @@ public interface LicenseCommit {
   /**
    * Installs the specified license on SonarQube.
    *
-   * @throws IllegalArgumentException if new license is invalid
+   * @throws IllegalArgumentException if new license is invalid or cannot be read
    */
   void update(String newLicense);
 
