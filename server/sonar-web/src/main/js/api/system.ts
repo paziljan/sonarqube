@@ -58,6 +58,15 @@ export interface ClusterSysInfo extends SysInfo {
   'Search Nodes': NodeInfo[];
 }
 
+export interface SystemUpgrade {
+  version: string;
+  description: string;
+  releaseDate: string;
+  changeLogUrl: string;
+  downloadUrl: string;
+  plugins: any;
+}
+
 export function setLogLevel(level: string): Promise<void | Response> {
   return post('/api/system/change_log_level', { level }).catch(throwGlobalError);
 }
@@ -68,6 +77,49 @@ export function getSystemInfo(): Promise<SysInfo> {
 
 export function getSystemStatus(): Promise<any> {
   return getJSON('/api/system/status');
+}
+
+export function getSystemUpgrades(): Promise<{
+  upgrades: SystemUpgrade[];
+  updateCenterRefresh: string;
+}> {
+  return getJSON('/api/system/upgrades').then(() => ({
+    updateCenterRefresh: 'plop',
+    upgrades: [
+      {
+        version: '5.6.6',
+        description: 'Version 5.6.6 description',
+        releaseDate: '2017-04-02',
+        changeLogUrl: 'changelogurl',
+        downloadUrl: 'downloadurl',
+        plugins: {}
+      },
+      {
+        version: '5.6.5',
+        description: 'Version 5.6.5 description',
+        releaseDate: '2017-03-01',
+        changeLogUrl: 'changelogurl',
+        downloadUrl: 'downloadurl',
+        plugins: {}
+      },
+      {
+        version: '6.3',
+        description: 'Version 6.3 description',
+        releaseDate: '2017-05-02',
+        changeLogUrl: 'changelogurl',
+        downloadUrl: 'downloadurl',
+        plugins: {}
+      },
+      {
+        version: '6.4',
+        description: 'Version 6.4 description',
+        releaseDate: '2017-06-02',
+        changeLogUrl: 'changelogurl',
+        downloadUrl: 'downloadurl',
+        plugins: {}
+      }
+    ]
+  }));
 }
 
 export function getMigrationStatus(): Promise<any> {

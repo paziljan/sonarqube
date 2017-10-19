@@ -200,7 +200,7 @@ export default class App extends React.PureComponent<Props, State> {
     return (
       <div className="page page-limited" id="marketplace-page">
         <Helmet title={translate('marketplace.page')} />
-        <div className="marketplace-notifs">
+        <div className="page-notifs">
           {editionStatus && (
             <EditionsStatusNotif
               editions={editions}
